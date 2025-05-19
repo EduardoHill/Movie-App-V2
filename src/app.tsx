@@ -5,6 +5,7 @@ import { Play } from './images/play'
 import { Star } from './images/star'
 import { Clock } from './images/Time'
 import { useState } from 'react'
+import Header from './components/header'
 
 const apiKey = import.meta.env.VITE_API_KEY_TMDB
 const baseUrl = 'https://api.themoviedb.org/3/movie/popular'
@@ -20,30 +21,35 @@ type MovieProps = {
   vote_average: number
   key: string
 }
-
-const id = Math.floor(Math.random() * 10) + 1
-const id2 = Math.floor(Math.random() * 10) + 1
-const id3 = Math.floor(Math.random() * 10) + 1
+//Gerando os id das paginas
+const id = Math.floor(Math.random() * 500) + 1
+const id2 = Math.floor(Math.random() * 500) + 1
+const id3 = Math.floor(Math.random() * 500) + 1
 
 export function App() {
+  //useState de filme, trailer, duraçao e ano de lançamento
   const [movie, setMovie] = useState<MovieProps>({} as MovieProps)
   const [video, setVideo] = useState<MovieProps>({} as MovieProps)
   const [duration, setDuration] = useState<string>('00:00:00')
   const [year, setYear] = useState<string>('0000')
 
+  //useState de filme, trailer, duraçao e ano de lançamento
   const [movie2, setMovie2] = useState<MovieProps>({} as MovieProps)
   const [video2, setVideo2] = useState<MovieProps>({} as MovieProps)
   const [duration2, setDuration2] = useState<string>('00:00:00')
   const [year2, setYear2] = useState<string>('0000')
 
+  //useState de filme, trailer, duraçao e ano de lançamento
   const [movie3, setMovie3] = useState<MovieProps>({} as MovieProps)
   const [video3, setVideo3] = useState<MovieProps>({} as MovieProps)
   const [duration3, setDuration3] = useState<string>('00:00:00')
   const [year3, setYear3] = useState<string>('0000')
 
+  //useState para verificar se a pagina esta carregando para animação
   const [isLoading, setIsLoading] = useState(false)
   const [buttonAni, setButtonAni] = useState(false)
 
+  //Funções para carregar os filmes
   async function handlegetMovie() {
     setIsLoading(true)
     setButtonAni(true)
@@ -55,6 +61,7 @@ export function App() {
     const randomMovie = movies[Math.floor(Math.random() * movies.length)]
     setMovie(randomMovie)
 
+    //Função para carregar o video
     const videoResponse = await fetch(
       `https://api.themoviedb.org/3/movie/${randomMovie.id}/videos?api_key=${apiKey}&language=pt-BR`
     )
@@ -64,6 +71,7 @@ export function App() {
     )
     setVideo(trailer)
 
+    //Função para pegar os detalhes do filme
     const detailsResponse = await fetch(
       `https://api.themoviedb.org/3/movie/${randomMovie.id}?api_key=${apiKey}&language=pt-BR`
     )
@@ -87,7 +95,7 @@ export function App() {
     )
     const data2 = await response2.json()
     const movies2: MovieProps[] = data2.results
-    const randomMovie2 = movies[Math.floor(Math.random() * movies2.length)]
+    const randomMovie2 = movies2[Math.floor(Math.random() * movies2.length)]
     setMovie2(randomMovie2)
 
     const videoResponse2 = await fetch(
@@ -153,30 +161,7 @@ export function App() {
   return (
     <div className=' rounded-2xl bg-gradient-to-r from-[#C497FF] to-[#9747FF] p-2  '>
       <div className='flex flex-col bg-[#1E1F28] w-[846px] h-[632px] rounded-2xl gap-9 px-[96px] py-[64px]  '>
-        <div className='flex justify-between items-center  '>
-          <img src={Log} alt='' className='w-[85px] h-[44px] ' />
-          <button
-            onClick={handlegetMovie}
-            disabled={buttonAni}
-            className={`flex justify-between text-white items-center gap-1.5 bg-gradient-to-r from-[#8323FF] to-[#FF2DAF] text-[16px] px-4 py-2 rounded-[10px] cursor-pointer transition-all duration-300 hover:from-[#9F55FF] hover:to-[#FF46B9] ${
-              buttonAni ? 'opacity-70 cursor-not-allowed' : ''
-            }`}
-          >
-            {buttonAni ? (
-              <>
-                Carregando...
-                <div className='w-[24px] h-[24px] border-2 border-white border-t-transparent rounded-full animate-spin'></div>
-              </>
-            ) : (
-              <>
-                Nova recomendação
-                <div className='bg-white/20 w-[32px] h-[32px] rounded-full flex items-center justify-center'>
-                  <Icon />
-                </div>
-              </>
-            )}
-          </button>
-        </div>
+        <Header onClick={handlegetMovie} buttonAni={buttonAni} />
         <div className=' h-full w-full flex  gap-4'>
           {isLoading || !movie || !movie2 || !movie3 ? (
             <div className='w-full flex justify-center items-center h-[300px]'>
