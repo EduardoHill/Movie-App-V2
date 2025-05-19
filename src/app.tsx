@@ -1,5 +1,3 @@
-import { Icon } from './images/Icon'
-import Log from './images/image.png'
 import { Calendario } from './images/Calendario'
 import { Play } from './images/play'
 import { Star } from './images/star'
