@@ -4,9 +4,6 @@ import { Star } from '../images/star'
 import { Clock } from '../images/Time'
 
 import FilmeCapa from '../images/Poster.png'
-import { useState } from 'react'
-
-const id = Math.floor(Math.random() * 10) + 1
 
 export function Main() {
   return (
